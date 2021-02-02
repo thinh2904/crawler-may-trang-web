@@ -19,8 +19,8 @@ def save_1_file(url, stt):
 
 #Dựa vào hàm lưu 1 file để lưu tất cả các file
 def save_all_file(history, max):
-    for (stt, url_con) in enumerate(history):
+    for (stt, url_set) in enumerate(history):
         if stt >= max:
             break
-        save_1_file(url_con, max)
-        print(f'{stt} {url_con}')
+        save_1_file(url_set, max)
+        print(f'{stt} {url_set}')
