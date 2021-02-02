@@ -1,0 +1,34 @@
+#Các thư viện cần thiết
+import requests
+from bs4 import BeautifulSoup
+import re
+
+
+#Hàm tìm các URL dựa trên URL gốc
+#Kết quả là một tập hợp các URL
+def find_url(url, start_url):
+    url_list = set()
+    link = requests.get(url)
+    link_soup = BeautifulSoup(link.text, 'html.parser')
+    content = link_soup('a', attrs={'href': True})
+    for i in content:
+        a = i['href']
+        th1 = '^{url_goc}'
+        th2 = '^/'
+        if re.match(th1, a):
+            url_list.add(a)
+        else:
+            if re.match(th2, a):
+                b = f'{start_url}{a}'
+                url_list.add(b)
+    return url_list
+
+
+#Tiếp tục tìm thêm URL cho đến khi đủ yêu cầu
+def find_next_url(hang_cho, start_url, max):
+    history = hang_cho
+    while (len(hang_cho) > 0) and (len(history) < max):
+        url_list = find_url(hang_cho.pop(), start_url)
+        hang_cho = hang_cho | (url_list - history)
+        history = history | url_list
+    return history
