@@ -25,10 +25,10 @@ def find_url(url, start_url):
 
 
 #Tiếp tục tìm thêm URL cho đến khi đủ yêu cầu
-def find_next_url(hang_cho, start_url, max):
-    history = hang_cho
-    while (len(hang_cho) > 0) and (len(history) < max):
-        url_list = find_url(hang_cho.pop(), start_url)
-        hang_cho = hang_cho | (url_list - history)
+def find_next_url(queue, start_url, max):
+    history = queue
+    while (len(queue) > 0) and (len(history) < max):
+        url_list = find_url(queue.pop(), start_url)
+        queue = queue | (url_list - history)
         history = history | url_list
     return history
